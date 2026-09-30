@@ -282,7 +282,8 @@ template:
           lon: "{{ state_attr('device_tracker.volvo_xc60_location', 'longitude') | float(0) }}"
           plat: "{{ state_attr('sensor.volvo_xc60_address', 'latitude') | float(0) }}"
           plon: "{{ state_attr('sensor.volvo_xc60_address', 'longitude') | float(0) }}"
-          moved: "{{ plat == 0 or distance(lat, lon, plat, plon) > 0.15 }}"
+          # lat == 0: the integration is briefly unavailable (no position) — not a move
+          moved: "{{ lat != 0 and (plat == 0 or distance(lat, lon, plat, plon) > 0.15) }}"
       - action: rest_command.nominatim_reverse
         data: { lat: "{{ lat }}", lon: "{{ lon }}" }
         response_variable: geo
