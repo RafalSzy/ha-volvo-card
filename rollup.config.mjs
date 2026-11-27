@@ -9,5 +9,5 @@ export default {
     format: "es",
     sourcemap: false,
   },
-  plugins: [resolve(), typescript(), terser()],
+  plugins: [resolve(), typescript({ outDir: "." }), terser()],
 };
